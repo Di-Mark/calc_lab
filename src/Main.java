@@ -24,7 +24,7 @@ public class Main extends JFrame implements ActionListener {
             jTempButton.addActionListener(listen);
             btns.add(jTempButton);
         }
-        List<String> operation = Arrays.asList("+", "-", "*", "/", "=", ".", "c");
+        List<String> operation = Arrays.asList("+", "-", "*", "/", "=", ".", "c","acos");
         JPanel buttons = new JPanel();
         btns.forEach(buttons::add);
         operation.forEach(it -> {
@@ -47,17 +47,34 @@ public class Main extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
         System.out.println(e.getActionCommand());
-        if (e.getActionCommand().equals("c")) {
-            s = "";
+
+        if(e.getActionCommand().equals("acos")){
+            s = aCosProcessing(s);
         }else {
-            if(e.getActionCommand().equals("=")){
-                s = processing(s);
-            }else {
-                s = s + e.getActionCommand();
+            if (e.getActionCommand().equals("c")) {
+                s = "";
+            } else {
+                if (e.getActionCommand().equals("=")) {
+                    s = processing(s);
+                } else {
+                    s = s + e.getActionCommand();
+                }
             }
         }
-
+                 
         result.setText(s);
+    }
+
+
+    public static String aCosProcessing(String s){
+        double a = Double.parseDouble(s);
+        if(a >= -1 && a<= 1){
+            a = Math.acos(a);
+            s = Double.toString(a);
+        }else {
+            s = "Error";
+        }
+        return s;
     }
     public static String processing(String s){
         String first_str = "";
@@ -91,6 +108,9 @@ public class Main extends JFrame implements ActionListener {
                 result = first_f / second_f;
                 break;
         }
-        return Float.toString(result);
+        if(Float.toString(result).equals("Infinity")){
+            return "Error";
+        }else {
+        return Float.toString(result);}
     }
 }
